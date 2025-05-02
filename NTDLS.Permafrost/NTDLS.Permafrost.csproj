@@ -14,7 +14,7 @@
       Vastly improved entropy.
       Wider key schedule reach.
     </PackageReleaseNotes>
-    <Version>2.1.0</Version>
+    <Version>2.1.1</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>cryptography;secure;symmetric;stream;encryption;</PackageTags>
     <IncludeSymbols>True</IncludeSymbols>
@@ -25,9 +25,6 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="Icon.ico" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\Images\Logo.png">
