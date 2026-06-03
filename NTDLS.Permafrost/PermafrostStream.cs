@@ -46,200 +46,16 @@ namespace NTDLS.Permafrost
         #region Constructors.
 
         /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key in Continuous mode.
+        /// Initializes a new instance of the Permafrost stream using a string key.
         /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
+        /// <param name="innerStream">Stream from outside operation.</param>
         /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, byte[] key, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key and a defined mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The bytes to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or stream mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, byte[] key, PermafrostMode mode, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key, mode);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key in Continuous mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, string key, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key and a defined mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The string to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or stream mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, string key, PermafrostMode mode, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key, mode);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key in Continuous mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, byte[] key, byte[] seed, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key, seed);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key and a defined mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The bytes to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or stream mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, byte[] key, PermafrostMode mode, byte[] seed, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key, mode, seed);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key in Continuous mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, string key, byte[] seed, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key, seed);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key and a defined mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The string to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or stream mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, string key, PermafrostMode mode, byte[] seed, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key, mode, seed);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key in Continuous mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, byte[] key, int keyScheduleCount, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key, keyScheduleCount);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key and a defined mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The bytes to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or stream mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, byte[] key, PermafrostMode mode, int keyScheduleCount, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key, mode, keyScheduleCount);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key in Continuous mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, string key, int keyScheduleCount, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key, keyScheduleCount);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key and a defined mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The string to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or stream mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, string key, PermafrostMode mode, int keyScheduleCount, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key, mode, keyScheduleCount);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key in Continuous mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, byte[] key, byte[] seed, int keyScheduleCount, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key, seed, keyScheduleCount);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key and a defined mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The bytes to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or stream mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, byte[] key, PermafrostMode mode, byte[] seed, int keyScheduleCount, bool leaveOpen = false)
+        /// <param name="mode">Whether to use AutoReset mode or Continuous mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
+        /// <param name="seed">Byte array used to generate key schedules. Uses a built-in default when null.</param>
+        /// <param name="keyScheduleCount">The number of key schedules to generate. Uses <see cref="PermafrostCipher.DefaultKeyScheduleCount"/> when 0.</param>
+        /// <param name="leaveOpen">Whether the inner stream should be left open on dispose.</param>
+        public PermafrostStream(Stream innerStream, string key, PermafrostMode mode = PermafrostMode.Continuous,
+            byte[]? seed = null, int keyScheduleCount = PermafrostCipher.DefaultKeyScheduleCount, bool leaveOpen = false)
         {
             _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
             _leaveOpen = leaveOpen;
@@ -247,30 +63,16 @@ namespace NTDLS.Permafrost
         }
 
         /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key in Continuous mode.
+        /// Initializes a new instance of the Permafrost stream using a byte array key.
         /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, string key, byte[] seed, int keyScheduleCount, bool leaveOpen = false)
-        {
-            _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
-            _leaveOpen = leaveOpen;
-            _permafrost = new PermafrostCipher(key, seed, keyScheduleCount);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Permafrost stream using a key and a defined mode.
-        /// </summary>
-        /// <param name="innerStream">Steam from outside operation.</param>
-        /// <param name="key">The string to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or stream mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        /// <param name="leaveOpen">Whether the stream should be left open on dispose.</param>
-        public PermafrostStream(Stream innerStream, string key, PermafrostMode mode, byte[] seed, int keyScheduleCount, bool leaveOpen = false)
+        /// <param name="innerStream">Stream from outside operation.</param>
+        /// <param name="key">The bytes to use as the encryption/decryption key.</param>
+        /// <param name="mode">Whether to use AutoReset mode or Continuous mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
+        /// <param name="seed">Byte array used to generate key schedules. Uses a built-in default when null.</param>
+        /// <param name="keyScheduleCount">The number of key schedules to generate. Uses <see cref="PermafrostCipher.DefaultKeyScheduleCount"/> when 0.</param>
+        /// <param name="leaveOpen">Whether the inner stream should be left open on dispose.</param>
+        public PermafrostStream(Stream innerStream, byte[] key, PermafrostMode mode = PermafrostMode.Continuous,
+            byte[]? seed = null, int keyScheduleCount = PermafrostCipher.DefaultKeyScheduleCount, bool leaveOpen = false)
         {
             _innerStream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
             _leaveOpen = leaveOpen;

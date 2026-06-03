@@ -44,15 +44,15 @@ namespace NTDLS.Permafrost
         /// <summary>
         /// The default number of key schedules to generate.
         /// </summary>
-        public readonly int DefaultKeyScheduleCount = 64;
+        public const int DefaultKeyScheduleCount = 64;
         /// <summary>
         /// The minimum number of key schedules to generate.
         /// </summary>
-        public readonly int MinimumKeyScheduleCount = 1;
+        public const int MinimumKeyScheduleCount = 1;
         /// <summary>
         /// The maximum number of key schedule to generate.
         /// </summary>
-        public readonly int MaximumKeyScheduleCount = 10 * 1024;
+        public const int MaximumKeyScheduleCount = 10 * 1024;
 
         /// <summary>
         /// The number of key schedules generated.
@@ -89,140 +89,24 @@ namespace NTDLS.Permafrost
         public PermafrostCipher() { }
 
         /// <summary>
-        /// Initializes a new instance of Permafrost using a key in Continuous mode.
+        /// Initializes a new instance of Permafrost using a string key.
         /// </summary>
         /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        public PermafrostCipher(byte[] key)
-            => Initialize(_defaultSeed, DefaultKeyScheduleCount, key, PermafrostMode.Continuous);
+        /// <param name="mode">Whether to use AutoReset mode or Continuous mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
+        /// <param name="seed">Byte array used to generate key schedules. Uses a built-in default when null.</param>
+        /// <param name="keyScheduleCount">The number of key schedules to generate. Uses <see cref="DefaultKeyScheduleCount"/> when 0.</param>
+        public PermafrostCipher(string key, PermafrostMode mode = PermafrostMode.Continuous, byte[]? seed = null, int keyScheduleCount = DefaultKeyScheduleCount)
+            => Initialize(seed ?? _defaultSeed, keyScheduleCount, Encoding.UTF8.GetBytes(key), mode);
 
         /// <summary>
-        /// Initializes a new instance of Permafrost using a key and a defined mode.
+        /// Initializes a new instance of Permafrost using a byte array key.
         /// </summary>
         /// <param name="key">The bytes to use as the encryption/decryption key.</param>
         /// <param name="mode">Whether to use AutoReset mode or Continuous mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        public PermafrostCipher(byte[] key, PermafrostMode mode)
-            => Initialize(_defaultSeed, DefaultKeyScheduleCount, key, mode);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key in Continuous mode.
-        /// </summary>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        public PermafrostCipher(string key)
-            => Initialize(_defaultSeed, DefaultKeyScheduleCount, Encoding.UTF8.GetBytes(key), PermafrostMode.Continuous);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key and a defined mode.
-        /// </summary>
-        /// <param name="key">The string to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or Continuous mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        public PermafrostCipher(string key, PermafrostMode mode)
-            => Initialize(_defaultSeed, DefaultKeyScheduleCount, Encoding.UTF8.GetBytes(key), mode);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key in Continuous mode.
-        /// </summary>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        public PermafrostCipher(byte[] key, byte[] seed)
-            => Initialize(seed, DefaultKeyScheduleCount, key, PermafrostMode.Continuous);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key and a defined mode.
-        /// </summary>
-        /// <param name="key">The bytes to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or Continuous mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        public PermafrostCipher(byte[] key, PermafrostMode mode, byte[] seed)
-            => Initialize(seed, DefaultKeyScheduleCount, key, mode);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key in Continuous mode.
-        /// </summary>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        public PermafrostCipher(string key, byte[] seed)
-            => Initialize(seed, DefaultKeyScheduleCount, Encoding.UTF8.GetBytes(key), PermafrostMode.Continuous);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key and a defined mode.
-        /// </summary>
-        /// <param name="key">The string to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or Continuous mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        public PermafrostCipher(string key, PermafrostMode mode, byte[] seed)
-            => Initialize(seed, DefaultKeyScheduleCount, Encoding.UTF8.GetBytes(key), mode);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key in Continuous mode.
-        /// </summary>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        public PermafrostCipher(byte[] key, int keyScheduleCount)
-            => Initialize(_defaultSeed, keyScheduleCount, key, PermafrostMode.Continuous);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key and a defined mode.
-        /// </summary>
-        /// <param name="key">The bytes to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or Continuous mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        public PermafrostCipher(byte[] key, PermafrostMode mode, int keyScheduleCount)
-            => Initialize(_defaultSeed, keyScheduleCount, key, mode);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key in Continuous mode.
-        /// </summary>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        public PermafrostCipher(string key, int keyScheduleCount)
-            => Initialize(_defaultSeed, keyScheduleCount, Encoding.UTF8.GetBytes(key), PermafrostMode.Continuous);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key and a defined mode.
-        /// </summary>
-        /// <param name="key">The string to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or Continuous mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        public PermafrostCipher(string key, PermafrostMode mode, int keyScheduleCount)
-            => Initialize(_defaultSeed, keyScheduleCount, Encoding.UTF8.GetBytes(key), mode);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key in Continuous mode.
-        /// </summary>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        public PermafrostCipher(byte[] key, byte[] seed, int keyScheduleCount)
-            => Initialize(seed, keyScheduleCount, key, PermafrostMode.Continuous);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key and a defined mode.
-        /// </summary>
-        /// <param name="key">The bytes to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or Continuous mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        public PermafrostCipher(byte[] key, PermafrostMode mode, byte[] seed, int keyScheduleCount)
-            => Initialize(seed, keyScheduleCount, key, mode);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key in Continuous mode.
-        /// </summary>
-        /// <param name="key">The UTF8 string to use as the encryption/decryption key.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        public PermafrostCipher(string key, byte[] seed, int keyScheduleCount)
-            => Initialize(seed, keyScheduleCount, Encoding.UTF8.GetBytes(key), PermafrostMode.Continuous);
-
-        /// <summary>
-        /// Initializes a new instance of Permafrost using a key and a defined mode.
-        /// </summary>
-        /// <param name="key">The string to use as the encryption/decryption key.</param>
-        /// <param name="mode">Whether to use AutoReset mode or Continuous mode. In AutoReset mode the order of encryption and decryption do not matter, but in Continuous mode, the encryption is expected to be continuous and each call to Cipher() depends on the call before it.</param>
-        /// <param name="seed">Byte array used to generate key schedules.</param>
-        /// <param name="keyScheduleCount">The number of key schedules to generate.</param>
-        public PermafrostCipher(string key, PermafrostMode mode, byte[] seed, int keyScheduleCount)
-            => Initialize(seed, keyScheduleCount, Encoding.UTF8.GetBytes(key), mode);
+        /// <param name="seed">Byte array used to generate key schedules. Uses a built-in default when null.</param>
+        /// <param name="keyScheduleCount">The number of key schedules to generate. Uses <see cref="DefaultKeyScheduleCount"/> when 0.</param>
+        public PermafrostCipher(byte[] key, PermafrostMode mode = PermafrostMode.Continuous, byte[]? seed = null, int keyScheduleCount = DefaultKeyScheduleCount)
+            => Initialize(seed ?? _defaultSeed, keyScheduleCount, key, mode);
 
         #endregion
 
