@@ -11,9 +11,9 @@
     <RepositoryUrl>https://github.com/NTDLS/NTDLS.Permafrost</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageReleaseNotes>
-      Dependency updates and introduced .net 10 support.
-    </PackageReleaseNotes>
-    <Version>2.1.2</Version>
+        Simplify constructor API across PermafrostCipher and Stream
+	</PackageReleaseNotes>
+    <Version>2.2.0</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>cryptography;secure;symmetric;stream;encryption;</PackageTags>
     <IncludeSymbols>True</IncludeSymbols>
