@@ -4,7 +4,7 @@ Permafrost is a lightweight symmetric encryption library for .NET, derived from 
 
 📦 Be sure to check out the NuGet package: https://www.nuget.org/packages/NTDLS.Permafrost
 
-## When would I use this?
+## When to use this package
 
 - You want a fast, dependency-free way to obfuscate or protect small pieces of data in memory (strings, buffers, config values) without pulling in a heavyweight cryptography stack.
 - You need to encrypt or decrypt a file, network stream, or any other `Stream` on the fly by wrapping it in a `PermafrostStream`. Because it is a plain `Stream`, it composes with anything else in the pipeline — for example, chain it with `GZipStream` to both compress and encrypt files.
