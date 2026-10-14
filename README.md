@@ -11,8 +11,6 @@ Permafrost is a lightweight symmetric encryption library for .NET, derived from 
 - You prefer a simple, key-based API (`new PermafrostCipher("myKey")`) over building and managing `SymmetricAlgorithm` objects yourself.
 - You are working within the NASCCL ecosystem and want its cipher available as a maintained, multi-targeted NuGet package (net8.0 / net9.0 / net10.0).
 
-Note: Permafrost is intended for data protection and obfuscation in trusted contexts; it is not a substitute for vetted standards (such as AES-GCM) when you need authenticated encryption or cryptographic guarantees against active adversaries.
-
 ## Usage examples
 
 ### Encrypt and decrypt a string
